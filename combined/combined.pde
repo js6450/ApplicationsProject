@@ -87,7 +87,8 @@ void setup() {
 
   audioLeft();
   
-  //m.jump(450);
+  //println("duration: " + m.duration());
+  //m.jump(410);
 }
 
 
@@ -205,12 +206,12 @@ void draw() {
     }
   }
 
-  if (m.time() >= m.duration() - 8) {
+  if (m.time() >= m.duration() - 12) {
     if (!startTitle) {
       startTitle = true;
     }
     println("videoAlpha: " + videoAlpha);
-    videoAlpha = int(map(m.time(), m.duration() - 8, m.duration(), 255, 0));
+    videoAlpha = int(map(m.time(), m.duration() - 12, m.duration(), 360, 0));
   }
 
   if (int(m.time()) >= int(m.duration())) {
