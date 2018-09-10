@@ -1,13 +1,4 @@
 import processing.video.*;
-
-/**
- * This sketch demonstrates how to use the BandPass effect.<br />
- * Move the mouse left and right to change the frequency of the pass band.<br />
- * Move the mouse up and down to change the band width of the pass band.
- * <p>
- * For more information about Minim and additional features, visit http://code.compartmental.net/minim/
- */
-
 import ddf.minim.*;
 import ddf.minim.effects.*;
 import ddf.minim.ugens.*;
@@ -80,20 +71,6 @@ void draw()
   if (fr>60) {
     freq();
   }
-
-  //  if ( output.hasControl(Controller.BALANCE) )
-  //  {
-  //    float val = map(mouseX, 0, width, -1, 1);
-  //    // if a balance control is not available, this will do nothing
-  //    output.setBalance(val); 
-  //    // if a balance control is not available this will report zero
-  //    text("The current balance is " + output.getBalance() + ".", 5, 15);
-  //  } else
-  //  {
-  //    text("This output doesn't have a balance control.", 5, 15);
-  //  }
-  //bw+=0.5; 
-  //background(0);
   stroke(255);
   // draw the waveforms
   // the values returned by left.get() and right.get() will be between -1 and 1,
@@ -125,27 +102,12 @@ void draw()
   }
 }
 
-//void mouseMoved()
-//{
-//  // map the mouse position to the range [100, 10000], an arbitrary range of passBand frequencies
-//  float passBand = map(mouseX, 0, width, 10, 2000);
-//  //float passBand = 20;
-//  bpf.setFreq(passBand);
-//  float bandWidth = map(mouseY, 0, height, 50, 500);
-//  //float bandWidth=20;
+//void mouseClicked() {
+//  bw+=10;
 //  bpf.setBandWidth(bw);
-//  // prints the new values of the coefficients in the console
-//  //bpf.printCoeff();
-//    println("Passband: "+passBand+"\t bandWidth: " + bw);
 
+//  println("BW: "+bw);
 //}
-
-void mouseClicked() {
-  bw+=10;
-  bpf.setBandWidth(bw);
-
-  println("BW: "+bw);
-}
 //void mousePressed(){
 //  float passBand = 2400;
 //  float bandWidth = 6400;
