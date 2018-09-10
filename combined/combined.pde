@@ -61,7 +61,7 @@ void setup() {
   output = minim.getLineOut();
   //output.setVolume(0.0);
 
-  groove = new FilePlayer( minim.loadFileStream("audio_edited.wav") );
+  groove = new FilePlayer( minim.loadFileStream("v5_edit.wav") );
   bpf = new BandPass(fq, 10, output.sampleRate());
 
   groove.patch( bpf ).patch( output );
@@ -210,7 +210,7 @@ void draw() {
     if (!startTitle) {
       startTitle = true;
     }
-    println("videoAlpha: " + videoAlpha);
+    //println("videoAlpha: " + videoAlpha);
     videoAlpha = int(map(m.time(), m.duration() - 12, m.duration(), 360, 0));
   }
 

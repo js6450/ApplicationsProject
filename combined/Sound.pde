@@ -30,8 +30,8 @@ void bWidth() {
 }
 
 void freq() {
-  if (fq<400) {
-    fq+=0.1;
+  if (fq>80) {
+    fq-=0.1;
   }
 
 //  println("fq: "+fq);
