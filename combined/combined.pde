@@ -96,10 +96,10 @@ void draw() {
 
   //output.setVolume(volLevel);
   //println("volume is at "+output.getVolume());
-  if (volLevel<1) {
-    audioSweep(volLevel);
-  }
-  x++;
+  //if (volLevel<1) {
+  //  audioSweep(volLevel);
+  //}
+ // x++;
 
   //int fr = int(x/frameRate);
   //println("Framerate: " + fr);
@@ -142,7 +142,7 @@ void draw() {
       }
     }
 
-    if (step > 10 && !isDone) {
+    if (step > 5 && !isDone) {
       changeStep();
     } else {
       satStart = true;
@@ -184,7 +184,7 @@ void draw() {
           float b = brightness(m.pixels[index]);
           float s = saturation(m.pixels[index]);
 
-          if (step > 10) {
+          if (step > 5 && !isDone) {
             s = 0;
             if (b < thresh) {
               b = 0;
@@ -209,8 +209,8 @@ void draw() {
     if (!startTitle) {
       startTitle = true;
     }
-    // println("done");
-    videoAlpha = int(map(m.time(), m.duration() - 8, m.duration(), 360, 0));
+    println("videoAlpha: " + videoAlpha);
+    videoAlpha = int(map(m.time(), m.duration() - 8, m.duration(), 255, 0));
   }
 
   if (int(m.time()) >= int(m.duration())) {
@@ -232,13 +232,18 @@ void draw() {
 
   if (isDone) {
     if (!startTitle) {
-      if (imgTint < 360) {
-        imgTint++;
-      }
+      //if (imgTint < 360) {
+      //  imgTint++;
+      //}
+      
+      imgTint = int(map(sat, 0.5, 1.0, 0, 360));
+      a = int(map(sat, 0.5, 1.0, 150, 0));
+      
+      //println("imgTint: " + imgTint + ", a: " + a);
 
-      if (a > 0) {
-        a -= aSpeed;
-      }
+      //if (a > 0) {
+      //  a -= aSpeed;
+      //}
 
       tint(255, imgTint);
     } else {
@@ -313,7 +318,7 @@ void draw() {
 }
 
 int lastStepChange = 5000;
-int stepDuration = 1500;
+int stepDuration = 2500;
 void changeStep() {
 
   if (millis() - lastStepChange > stepDuration) {
@@ -321,7 +326,7 @@ void changeStep() {
 
     if (step > 75 && state == 0) {
       step = int(step * 0.85);
-    } else if (step <= 75 && step > 10 && stepFurther) {
+    } else if (step <= 75 && step > 5 && stepFurther) {
       step--;
       //step -= 3;
     }
@@ -329,7 +334,7 @@ void changeStep() {
     stepChanged = true;
 
     lastStepChange = millis();
-    stepDuration = int(random(1500, 4000));
+    stepDuration = int(random(2500, 4000));
 
     println("step: " + step);
   }
@@ -353,7 +358,7 @@ void changeThresh() {
 }
 
 int lastSatChange = 0;
-int satDuration = 1500;
+int satDuration = 2000;
 void changeSat() {
 
   if (millis() - lastSatChange > satDuration) {
@@ -361,14 +366,20 @@ void changeSat() {
 
     sat += random(0.01, 0.05);
 
-    if (sat > 0.7) {
+    if (sat > 0.5) {
       isDone = true;
+      
+      if(step < width / 2){
+        step *= 2;
+        
+        stepChanged = true;
+      }
     }
 
     lastSatChange = millis();
-    satDuration = int(random(1500, 2500));
+    satDuration = int(random(2000, 4000));
 
-    // println("sat: " + sat);
+    println("sat: " + sat + ", step: " + step);
   }
 }
 

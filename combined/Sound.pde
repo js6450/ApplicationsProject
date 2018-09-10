@@ -25,7 +25,7 @@ void bWidth() {
   if (bw<400) {
     bw+=0.02;
   }
-  println("bWidth: "+ bw);
+ // println("bWidth: "+ bw);
   bpf.setBandWidth(bw);
 }
 
@@ -34,5 +34,5 @@ void freq() {
     fq+=0.1;
   }
 
-  println("fq: "+fq);
+//  println("fq: "+fq);
 }
