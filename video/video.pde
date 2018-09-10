@@ -20,14 +20,14 @@ int state = 0;
 boolean stepFurther = true;
 boolean threshFurther = true;
 //boolean reduceDia = false;
-boolean satStart = true;
+boolean satStart = false;
 //boolean endRandom = false;
 
 ArrayList<Particle> p = new ArrayList<Particle>();
 
 void setup() {
-  //fullScreen();
-  size(1280, 720);
+  fullScreen();
+  //size(1280, 720);
 
   step = int(width / 2);
   aSpeed = random(0.001, 0.005);
@@ -39,6 +39,7 @@ void setup() {
   colorMode(HSB);
 
   background(0);
+  noCursor();
 }
 
 
@@ -66,8 +67,17 @@ void draw() {
     if (step > 5) {
       changeStep();
     } else {
-      if (sat < 1 && satStart) {
-        changeSat();
+      satStart = true;
+    }
+
+    //change satStart to true at time stamp
+    if (sat < 1 && satStart) {
+      changeSat();
+    }
+
+    if (sat >= 1) {
+      for (int i = p.size() - 1; i >= 0; i--) {
+        p.remove(i);
       }
     }
 
@@ -76,7 +86,9 @@ void draw() {
 
       for (int y = 0; y < m.height; y += step) {
         for (int x = 0; x < m.width; x += step) {
-          p.add(new Particle(x + step * 0.5, y + step * 0.5, step));
+          float tempX = map(x + step * 0.5, 0, m.width, 0, width);
+          float tempY = map(y + step * 0.5, 0, m.height, 0, height);
+          p.add(new Particle(tempX, tempY, step));
         }
       }
 
@@ -102,7 +114,7 @@ void draw() {
             s = s * sat;
           }
 
-          if (a < 200 && step < 50) {
+          if (a < 150 && step < 50) {
             a += aSpeed;
           }
 
@@ -122,6 +134,8 @@ void draw() {
       particle.update();
       particle.display();
     }
+  } else {
+  //  println("no particles");
   }
 
   if (isDone) {
@@ -134,7 +148,7 @@ void draw() {
     }
 
     tint(255, imgTint);
-    image(m, 0, 0);
+    image(m, 0, 0, width, height);
   }
 
   // println("state: " + state);
@@ -177,7 +191,7 @@ void changeThresh() {
     lastThreshChange = millis();
     threshDuration = int(random(500, 1000));
 
-    println(thresh);
+    //println(thresh);
   }
 }
 
@@ -198,7 +212,7 @@ void changeSat() {
     lastSatChange = millis();
     satDuration = int(random(1500, 2500));
 
-   // println("sat: " + sat);
+    // println("sat: " + sat);
   }
 }
 
@@ -214,12 +228,4 @@ void keyPressed() {
   if (key == '3') {
     satStart = true;
   }
-
-  //if (key == '4') {
-  //  reduceDia = true;
-  //}
-
-  //if (key == '5') {
-  //  endRandom = true;
-  //}
 }

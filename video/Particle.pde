@@ -20,22 +20,34 @@ class Particle {
 
   void update() {
 
-    if (diaOffsetAmount > 0 && dia < 75) {
-      diaOffsetAmount -= 0.001;
+    if (diaOffsetAmount > 0 && dia < 50) {
+      diaOffsetAmount -= 0.01;
     }
 
-    if (dia > 15) {
-      diaOffset = sin(frameCount * diaSpeed) * (dia * 0.2);
+    //diaOffset = sin(frameCount * diaSpeed) * (dia * 0.2) + dia * 0.2;
+
+    //xOffset = random(-dia * 0.5, dia * 0.5);
+    //yOffset = random(-dia * 0.5, dia * 0.5);
+
+    //xOffset = random(-8, 8);
+    //yOffset = random(-8, 8);
+
+    if (dia > 5) {
+      diaOffset = sin(frameCount * diaSpeed) * (dia * 0.2) + dia * 0.2;
     } else {
       diaOffset = 0;
     }
 
-    if (dia > 20) {
-      xOffset = random(-5, 5);
-      yOffset = random(-5, 5);
+    if (dia > 50) {
+      xOffset = random(-25, 25);
+      yOffset = random(-25, 25);
     } else {
-      xOffset = yOffset = 0;
-    }
+      xOffset = random(-dia * 0.5, dia * 0.5);
+      yOffset = random(-dia * 0.5, dia * 0.5);
+    } 
+    //else {
+    //  xOffset = yOffset = 0;
+    //}
   }
 
   void updateColor(float _h, float _s, float _b, float _a) {
