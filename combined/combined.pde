@@ -61,11 +61,11 @@ PGraphics titleLayer;
 PFont font;
 
 void setup() {
-  //fullScreen();
-  size(1280, 720);
+  fullScreen();
+  //size(1280, 720);
 
-  minim = new Minim(this);
-  output = minim.getLineOut();
+  //minim = new Minim(this);
+  //output = minim.getLineOut();
   //output.setVolume(0.0);
 
   //  file = new SoundFile(this, "v5_edit.wav");
@@ -73,21 +73,21 @@ void setup() {
   //  file.rate(1.1);
   //  println(file.duration());
 
-  groove = new FilePlayer( minim.loadFileStream("v5_edit.wav") );
-  //groove.play();
-  bpf = new BandPass(fq, 10, output.sampleRate());
+  //groove = new FilePlayer( minim.loadFileStream("v5_edit.wav") );
+  ////groove.play();
+  //bpf = new BandPass(fq, 10, output.sampleRate());
 
-  groove.patch( output );
+  //groove.patch( bpf ).patch( output );
   //groove.play();
-  //groove.cue(5000);
+ // groove.cue(100000);
 
 
   step = int(width / 2);
   aSpeed = random(0.001, 0.005);
 
-  m = new Movie(this, "v6.mp4");
+  m = new Movie(this, "v8.mp4");
   m.play();
- // m.volume(0);
+  //m.volume(0);
 
   titleLayer = createGraphics(width, height); 
   font = createFont("Futura", 50);
@@ -100,9 +100,9 @@ void setup() {
 
   // frameRate(10);
 
-  audioLeft();
+ // audioLeft();
 
-  println("duration: " + m.duration());
+//  println("duration: " + m.duration());
   //m.jump(410);
 }
 
@@ -123,27 +123,27 @@ void draw() {
   //int fr = int(x/frameRate);
   //println("Framerate: " + fr);
 
-  int fr = int(millis() / 1000);
+  //int fr = int(millis() / 1000);
 
-  if (groove.isPlaying()) {
-    if (fr == 0) {
-      audioLeft();
-    }
-    if (fr == 20) {
-      audioRight();
-    }
-    if (fr == 40) {
-      audioM();
-    }
+  //if (groove.isPlaying()) {
+  //  if (fr == 0) {
+  //    audioLeft();
+  //  }
+  //  if (fr == 20) {
+  //    audioRight();
+  //  }
+  //  if (fr == 40) {
+  //    audioM();
+  //  }
 
-    if (fr > 60) {
-      bWidth();
-    }
+  //  if (fr > 60) {
+  //    bWidth();
+  //  }
 
-    if (fr > 80) {
-      freq();
-    }
-  }
+  //  if (fr > 80) {
+  //    freq();
+  //  }
+  //}
 
   if (a > 0) {
     fill(0, 0, 0, 30);
@@ -151,9 +151,9 @@ void draw() {
   }
 
   if (m.available()) {
-    if (!soundPlaying) {
-      groove.play();
-    }
+    //if (!soundPlaying) {
+    //  groove.play();
+    //}
 
     m.read(); 
 
@@ -230,12 +230,12 @@ void draw() {
     }
   }
 
-  if (m.time() >= m.duration() - 12) {
+  if (m.time() >= m.duration() - 5) {
     if (!startTitle) {
       startTitle = true;
     }
     //println("videoAlpha: " + videoAlpha);
-    videoAlpha = int(map(m.time(), m.duration() - 12, m.duration(), 360, 0));
+    videoAlpha = int(map(m.time(), m.duration() - 5, m.duration(), 360, 0));
   }
 
   if (int(m.time()) >= int(m.duration())) {
@@ -248,7 +248,7 @@ void draw() {
 
     for (int i = 0; i < p.size(); i++) {
       Particle particle = p.get(i);
-      // particle.update();
+      particle.update();
       particle.display();
     }
   } else {
@@ -278,7 +278,7 @@ void draw() {
     image(m, 0, 0, width, height);
   }
 
-  image(m, 0, 0, width, height);
+//  image(m, 0, 0, width, height);
 
 
   // println(videoAlpha);
@@ -324,26 +324,26 @@ void draw() {
 
   // println("state: " + state);
 
-  if (keyPressed) {
-    if (key=='l') {
-      println("left");
-      audioLeft();
-    }
-    if (key=='r') {
-      println("right");
-      audioRight();
-    }
-    if (key=='m') {
-      audioM();
-    }
-  }
+  //if (keyPressed) {
+  //  if (key=='l') {
+  //    println("left");
+  //    audioLeft();
+  //  }
+  //  if (key=='r') {
+  //    println("right");
+  //    audioRight();
+  //  }
+  //  if (key=='m') {
+  //    audioM();
+  //  }
+  //}
 
-  pushStyle();
-  fill(255);
-  text(frameRate, width - 100, 50);
-  text(m.time(), width - 100, 100);
-  text(millis() / 1000, width - 100, 150);
-  popStyle();
+  //pushStyle();
+  //fill(255);
+  //text(frameRate, width - 100, 50);
+  //text(m.time(), width - 100, 100);
+  //text(millis() / 1000, width - 100, 150);
+  //popStyle();
 }
 
 int lastStepChange = 5000;
@@ -408,7 +408,7 @@ void changeSat() {
     lastSatChange = millis();
     satDuration = int(random(2000, 4000));
 
-    println("sat: " + sat + ", step: " + step);
+  //  println("sat: " + sat + ", step: " + step);
   }
 }
 
@@ -425,16 +425,16 @@ void keyPressed() {
     satStart = true;
   }
 
-  if (key == CODED) {
-    if (keyCode == UP) {
-      fq+=5.0;
-      println("fq: "+fq);
-    } 
-    if (keyCode == DOWN) {
-      fq-=5.0;
-      println("fq: "+fq);
-    }
-  } 
+  //if (key == CODED) {
+  //  if (keyCode == UP) {
+  //    fq+=5.0;
+  //    println("fq: "+fq);
+  //  } 
+  //  if (keyCode == DOWN) {
+  //    fq-=5.0;
+  //    println("fq: "+fq);
+  //  }
+  //} 
 
-  bpf.setFreq(fq);
+  //bpf.setFreq(fq);
 }
