@@ -1,13 +1,20 @@
+//import processing.sound.*;
+
 import processing.video.*;
+
 
 import ddf.minim.*;
 import ddf.minim.effects.*;
 import ddf.minim.ugens.*;
 
+//SoundFile file;
+
 Minim minim;
 AudioOutput output;
 FilePlayer groove;
 BandPass bpf;
+
+boolean soundPlaying = false;
 
 float bw=2.0;
 //float fq=440.0;
@@ -61,18 +68,26 @@ void setup() {
   output = minim.getLineOut();
   //output.setVolume(0.0);
 
+  //  file = new SoundFile(this, "v5_edit.wav");
+  //  file.play();
+  //  file.rate(1.1);
+  //  println(file.duration());
+
   groove = new FilePlayer( minim.loadFileStream("v5_edit.wav") );
+  //groove.play();
   bpf = new BandPass(fq, 10, output.sampleRate());
 
-  groove.patch( bpf ).patch( output );
-  groove.play();
+  groove.patch( output );
+  //groove.play();
+  //groove.cue(5000);
+
 
   step = int(width / 2);
   aSpeed = random(0.001, 0.005);
 
-  m = new Movie(this, "v5.mp4");
+  m = new Movie(this, "v6.mp4");
   m.play();
-  m.volume(0);
+ // m.volume(0);
 
   titleLayer = createGraphics(width, height); 
   font = createFont("Futura", 50);
@@ -83,16 +98,19 @@ void setup() {
   background(0);
   noCursor();
 
-  frameRate(30);
+  // frameRate(10);
 
   audioLeft();
-  
-  //println("duration: " + m.duration());
+
+  println("duration: " + m.duration());
   //m.jump(410);
 }
 
 
 void draw() {
+
+  // m.speed(0.905);
+
   //background(0);
 
   //output.setVolume(volLevel);
@@ -100,29 +118,31 @@ void draw() {
   //if (volLevel<1) {
   //  audioSweep(volLevel);
   //}
- // x++;
+  // x++;
 
   //int fr = int(x/frameRate);
   //println("Framerate: " + fr);
 
   int fr = int(millis() / 1000);
 
-  if (fr == 0) {
-    audioLeft();
-  }
-  if (fr == 20) {
-    audioRight();
-  }
-  if (fr == 40) {
-    audioM();
-  }
+  if (groove.isPlaying()) {
+    if (fr == 0) {
+      audioLeft();
+    }
+    if (fr == 20) {
+      audioRight();
+    }
+    if (fr == 40) {
+      audioM();
+    }
 
-  if (fr > 60) {
-    bWidth();
-  }
+    if (fr > 60) {
+      bWidth();
+    }
 
-  if (fr > 80) {
-    freq();
+    if (fr > 80) {
+      freq();
+    }
   }
 
   if (a > 0) {
@@ -131,6 +151,10 @@ void draw() {
   }
 
   if (m.available()) {
+    if (!soundPlaying) {
+      groove.play();
+    }
+
     m.read(); 
 
     m.loadPixels();
@@ -224,7 +248,7 @@ void draw() {
 
     for (int i = 0; i < p.size(); i++) {
       Particle particle = p.get(i);
-      particle.update();
+      // particle.update();
       particle.display();
     }
   } else {
@@ -236,10 +260,10 @@ void draw() {
       //if (imgTint < 360) {
       //  imgTint++;
       //}
-      
+
       imgTint = int(map(sat, 0.5, 1.0, 0, 360));
       a = int(map(sat, 0.5, 1.0, 150, 0));
-      
+
       //println("imgTint: " + imgTint + ", a: " + a);
 
       //if (a > 0) {
@@ -253,6 +277,9 @@ void draw() {
 
     image(m, 0, 0, width, height);
   }
+
+  image(m, 0, 0, width, height);
+
 
   // println(videoAlpha);
 
@@ -315,6 +342,7 @@ void draw() {
   fill(255);
   text(frameRate, width - 100, 50);
   text(m.time(), width - 100, 100);
+  text(millis() / 1000, width - 100, 150);
   popStyle();
 }
 
@@ -369,10 +397,10 @@ void changeSat() {
 
     if (sat > 0.5) {
       isDone = true;
-      
-      if(step < width / 2){
+
+      if (step < width / 2) {
         step *= 2;
-        
+
         stepChanged = true;
       }
     }
